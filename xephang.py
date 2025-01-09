@@ -34,7 +34,7 @@ def update_ranking(winner, loser, rankings):
         loser = rankings.pop(loser_index)
         rankings.insert(winner_index + 1, loser)
         # Các người khác nằm giữa người thắng và người thua sẽ lùi xuống một bậc
-        for i in range(winner_index + 1, len(rankings) - 1):
+        for i in range(winner_index + 1, loser_index - 1):
             rankings[i], rankings[i + 1] = rankings[i + 1], rankings[i]
     return rankings, winner_index, loser_index
 
