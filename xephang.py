@@ -1,5 +1,6 @@
 import unicodedata
 import streamlit as st
+from datetime import datetime
 
 # Danh sách vận động viên
 original_athletes = [
@@ -36,6 +37,8 @@ def update_ranking(winner, loser, rankings):
 # Hàm hiển thị bảng xếp hạng
 def print_rankings(rankings):
     st.write("### BẢNG XẾP HẠNG ĐỘI CẦU VĂN PHÚ")
+    current_time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    st.write(f"*Cập nhật lúc: {current_time}*")
     for i, athlete in enumerate(rankings, start=1):
         st.write(f"{i}: {athlete}")
 
@@ -46,8 +49,7 @@ st.title("Quản lý Bảng Xếp Hạng Đội Cầu Văn Phú")
 if "athletes" not in st.session_state:
     st.session_state.athletes = original_athletes.copy()
 
-# Hiển thị bảng xếp hạng ban đầu
-st.write("#### Bảng xếp hạng hiện tại")
+# Hiển thị bảng xếp hạng
 print_rankings(st.session_state.athletes)
 
 # Nhập kết quả trận đấu
@@ -65,8 +67,3 @@ if st.button("Cập nhật bảng xếp hạng"):
         print_rankings(st.session_state.athletes)
     else:
         st.error("Lỗi: Vận động viên không có trong danh sách. Vui lòng kiểm tra lại.")
-
-# Thêm lựa chọn khởi động lại
-if st.button("Khởi động lại"):
-    st.session_state.athletes = original_athletes.copy()
-    st.experimental_rerun()
