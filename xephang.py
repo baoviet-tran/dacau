@@ -66,10 +66,7 @@ if st.button("Cập nhật bảng xếp hạng"):
     else:
         st.error("Lỗi: Vận động viên không có trong danh sách. Vui lòng kiểm tra lại.")
 
-# Thêm lựa chọn khởi động lại hoặc thoát ứng dụng
+# Thêm lựa chọn khởi động lại
 if st.button("Khởi động lại"):
     st.session_state.athletes = original_athletes.copy()
     st.experimental_rerun()
-
-if st.button("Thoát ứng dụng"):
-    st.stop()
