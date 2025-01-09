@@ -32,18 +32,18 @@ def update_ranking(winner, loser, rankings):
     # Nếu người thua có thứ hạng cao hơn, hoán đổi vị trí
     if loser_index < winner_index:
         rankings[winner_index], rankings[loser_index] = rankings[loser_index], rankings[winner_index]
-    return rankings
+    return rankings, winner_index, loser_index
 
 # Hàm hiển thị bảng xếp hạng
 def print_rankings(rankings):
-    st.write("### BẢNG XẾP HẠNG ĐỘI CẦU VĂN PHÚ")
+    st.write("### BẢNG XẾP HẠNG ")
     current_time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     st.write(f"*Cập nhật lúc: {current_time}*")
     for i, athlete in enumerate(rankings, start=1):
         st.write(f"{i}: {athlete}")
 
 # Giao diện Streamlit
-st.title("Quản lý Bảng Xếp Hạng Đội Cầu Văn Phú")
+st.title("ĐỘI CẦU VĂN PHÚ")
 
 # Lưu trạng thái danh sách vận động viên
 if "athletes" not in st.session_state:
@@ -62,7 +62,18 @@ if st.button("Cập nhật bảng xếp hạng"):
     normalized_athletes = [normalize_name(a) for a in st.session_state.athletes]
     if normalize_name(winner) in normalized_athletes and normalize_name(loser) in normalized_athletes:
         st.write(f"TRẬN ĐẤU GIỮA {winner.upper()} và {loser.upper()}")
-        st.session_state.athletes = update_ranking(winner, loser, st.session_state.athletes)
+        
+        # Cập nhật bảng xếp hạng và lấy vị trí cũ của người thắng và người thua
+        updated_rankings, winner_index, loser_index = update_ranking(winner, loser, st.session_state.athletes)
+        
+        # Kiểm tra nếu người thắng cuộc có thay đổi thứ hạng
+        if winner_index < loser_index:
+            st.markdown(f"**Chúc mừng {winner.upper()} đã lên trình!**", unsafe_allow_html=True)
+        else:
+            st.markdown(f"**Chúc mừng {winner.upper()} đã giữ vững phong độ!**", unsafe_allow_html=True)
+        
+        # Cập nhật lại bảng xếp hạng
+        st.session_state.athletes = updated_rankings
         st.write("#### Bảng xếp hạng cập nhật")
         print_rankings(st.session_state.athletes)
     else:
