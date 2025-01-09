@@ -2,7 +2,7 @@ import unicodedata
 import streamlit as st
 
 # Danh sách vận động viên
-athletes = [
+original_athletes = [
     "VŨ", "TÙNG", "LỘC", "CÔNG", "NGUYÊN", "NGHĨA", "DIỆN", "LONG", "DƯƠNG", "VĂN ANH", "THANH", 
     "TRƯỜNG", "VIỆT", "DŨNG", "PHÚC", "QUANG", "ĐỨC", "BÌNH", "VIỆT ANH", "SƠN 73", "QUYẾT", 
     "MẠNH", "HƯỜNG", "SƠN 96", "TUẤN", "NHÀN", "HỒI", "HẢI", "HUYÊN", "NGỌC", "QUYẾN"
@@ -42,9 +42,13 @@ def print_rankings(rankings):
 # Giao diện Streamlit
 st.title("Quản lý Bảng Xếp Hạng Đội Cầu Văn Phú")
 
+# Lưu trạng thái danh sách vận động viên
+if "athletes" not in st.session_state:
+    st.session_state.athletes = original_athletes.copy()
+
 # Hiển thị bảng xếp hạng ban đầu
-st.write("#### Bảng xếp hạng ban đầu")
-print_rankings(athletes)
+st.write("#### Bảng xếp hạng hiện tại")
+print_rankings(st.session_state.athletes)
 
 # Nhập kết quả trận đấu
 st.write("#### Nhập kết quả trận đấu")
@@ -53,11 +57,19 @@ loser = st.text_input("Người thua").strip()
 
 if st.button("Cập nhật bảng xếp hạng"):
     # Kiểm tra tính hợp lệ của tên vận động viên
-    normalized_athletes = [normalize_name(a) for a in athletes]
+    normalized_athletes = [normalize_name(a) for a in st.session_state.athletes]
     if normalize_name(winner) in normalized_athletes and normalize_name(loser) in normalized_athletes:
         st.write(f"TRẬN ĐẤU GIỮA {winner.upper()} và {loser.upper()}")
-        athletes = update_ranking(winner, loser, athletes)
+        st.session_state.athletes = update_ranking(winner, loser, st.session_state.athletes)
         st.write("#### Bảng xếp hạng cập nhật")
-        print_rankings(athletes)
+        print_rankings(st.session_state.athletes)
     else:
         st.error("Lỗi: Vận động viên không có trong danh sách. Vui lòng kiểm tra lại.")
+
+# Thêm lựa chọn khởi động lại hoặc thoát ứng dụng
+if st.button("Khởi động lại"):
+    st.session_state.athletes = original_athletes.copy()
+    st.experimental_rerun()
+
+if st.button("Thoát ứng dụng"):
+    st.stop()
