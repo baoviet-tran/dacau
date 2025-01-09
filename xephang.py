@@ -37,13 +37,13 @@ def update_ranking(winner, loser, rankings):
     winner_index = normalized_rankings.index(normalize_name(winner))
     loser_index = normalized_rankings.index(normalize_name(loser))
     
-    # Nếu người thua có thứ hạng cao hơn, hoán đổi vị trí
-    if loser_index < winner_index:
-        rankings[winner_index], rankings[loser_index] = rankings[loser_index], rankings[winner_index]
-    # Nếu người thắng có thứ hạng thấp hơn người thua, người thua sẽ xếp ngay sau người thắng
-    elif winner_index < loser_index:
-        rankings.insert(winner_index + 1, rankings.pop(loser_index))
+    # Nếu người thắng có vị trí thấp hơn người thua, người thắng sẽ chiếm vị trí người thua
+    if winner_index > loser_index:
+        # Người thắng sẽ lấy vị trí của người thua, người thua sẽ lùi một bậc
+        rankings[loser_index], rankings[winner_index] = rankings[winner_index], rankings[loser_index]
+        rankings.insert(loser_index + 1, rankings.pop(winner_index + 1))
     
+    # Nếu người thắng có vị trí cao hơn người thua, không thay đổi bảng xếp hạng
     return rankings
 
 # Hàm hiển thị bảng xếp hạng
