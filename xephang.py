@@ -24,29 +24,12 @@ def normalize_name(name):
 
 # Hàm xếp hạng lại
 def update_ranking(winner, loser, rankings):
-    """
-    winner: tên vận động viên thắng
-    loser: tên vận động viên thua
-    rankings: danh sách xếp hạng hiện tại
-    """
-    # Chuẩn hóa tên vận động viên
     normalized_rankings = [normalize_name(a) for a in rankings]
     winner_index = normalized_rankings.index(normalize_name(winner))
     loser_index = normalized_rankings.index(normalize_name(loser))
     
-    # Nếu người thua có vị trí cao hơn người thắng, hoán đổi vị trí
     if loser_index < winner_index:
-        # Hoán đổi vị trí người thắng và người thua
         rankings[winner_index], rankings[loser_index] = rankings[loser_index], rankings[winner_index]
-        
-        # Người thua sẽ lấy vị trí ngay sau người thắng mới nhận được
-        loser = rankings.pop(loser_index)
-        rankings.insert(winner_index + 1, loser)
-        
-        # Các người khác giữa người thắng và người thua sẽ lùi xuống một bậc
-        for i in range(winner_index + 1, loser_index):
-            rankings[i], rankings[i + 1] = rankings[i + 1], rankings[i]
-    
     return rankings, winner_index, loser_index
 
 # Hàm hiển thị bảng xếp hạng
