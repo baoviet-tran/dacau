@@ -68,16 +68,20 @@ def update_ranking(winner, loser, rankings):
     winner_index = normalized_rankings.index(normalize_name(winner))
     loser_index = normalized_rankings.index(normalize_name(loser))
     
-    # Nếu người thắng có vị trí thấp hơn người thua, hoán đổi vị trí
-    if winner_index > loser_index:
-        # Người thắng sẽ chiếm vị trí của người thua
-        rankings[winner_index], rankings[loser_index] = rankings[loser_index], rankings[winner_index]
-        # Người thua sẽ lùi xuống một bậc so với vị trí trước khi đấu
-        rankings.insert(loser_index + 1, rankings.pop(winner_index + 1))
-    
     # Nếu người thắng có vị trí cao hơn người thua, bảng xếp hạng không thay đổi
+    if winner_index < loser_index:
+        # Người thắng sẽ chiếm vị trí của người thua
+        rankings[loser_index], rankings[winner_index] = rankings[winner_index], rankings[loser_index]
+        
+        # Người thua sẽ lấy vị trí ngay sau người thắng mới nhận được
+        loser = rankings.pop(loser_index)
+        rankings.insert(winner_index + 1, loser)
+        
+        # Các người khác giữa người thắng và người thua sẽ lùi xuống một bậc
+        for i in range(winner_index + 1, loser_index):
+            rankings[i], rankings[i + 1] = rankings[i + 1], rankings[i]
+    
     return rankings
-
 # Hàm hiển thị bảng xếp hạng
 def print_rankings(rankings):
     st.write("### BẢNG XẾP HẠNG ĐỘI CẦU VĂN PHÚ")
