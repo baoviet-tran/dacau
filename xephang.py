@@ -103,9 +103,9 @@ if st.button("Cập nhật bảng xếp hạng"):
         updated_rankings, winner_index, loser_index = update_ranking(winner, loser, st.session_state.athletes)
         
         if winner_index < loser_index:
-            st.markdown(f"**Chúc mừng {winner.upper()} đã lên trình!**", unsafe_allow_html=True)
-        else:
             st.markdown(f"**Chúc mừng {winner.upper()} đã giữ vững phong độ!**", unsafe_allow_html=True)
+        else:
+            st.markdown(f"**Chúc mừng {winner.upper()} đã lên trình!**", unsafe_allow_html=True)
         
         st.session_state.athletes = updated_rankings
         st.write("#### Bảng xếp hạng cập nhật")
