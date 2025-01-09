@@ -5,7 +5,7 @@ import requests
 import json
 
 # Thông tin GitHub (thay bằng thông tin của bạn)
-GITHUB_TOKEN = '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'
+GITHUB_TOKEN = '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'
 GITHUB_USER = 'baoviet-tran'
 GITHUB_REPO = 'dacau'
 GITHUB_FILE_PATH = 'ranking_file.json'  # Đường dẫn tới file chứa danh sách xếp hạng
